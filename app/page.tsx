@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowRight, ArrowUpRight, Menu, X, Wrench, ScanLine, Droplets, Settings2, ShieldCheck, MessageCircle, MapPin, Check, ChevronDown, Plus, Minus, Navigation } from 'lucide-react';
 
 const image = (id: string) => `/images/IMG_${id}.JPG.jpeg`;
@@ -23,6 +23,22 @@ function Brand() { return <span className="brand"><strong>LEO<span>CAR</span><i>
 
 export default function Home() {
   const [menu, setMenu] = useState(false);
+  const [activeSection, setActiveSection] = useState('');
+  useEffect(() => {
+    const ids = ['servicos', 'sobre', 'oficina', 'contato'];
+    function updateSection() {
+      let current = '';
+      for (const id of ids) {
+        const element = document.getElementById(id);
+        if (element && element.getBoundingClientRect().top <= window.innerHeight * .4) current = id;
+      }
+      setActiveSection(current);
+    }
+    updateSection();
+    window.addEventListener('scroll', updateSection, { passive: true });
+    window.addEventListener('resize', updateSection);
+    return () => { window.removeEventListener('scroll', updateSection); window.removeEventListener('resize', updateSection); };
+  }, []);
   const [service, setService] = useState('');
   const [notice, setNotice] = useState('');
   const [prepared, setPrepared] = useState('');
@@ -40,7 +56,7 @@ export default function Home() {
   return <>
     <a className="skip" href="#conteudo">Pular para o conteúdo</a>
     <div className="topbar"><span><MapPin size={12} /> AMÉRICO BRASILIENSE / SP</span><span>ATENÇÃO AO SEU CARRO. RESPEITO AO SEU CAMINHO.</span></div>
-    <header><a href="#inicio" aria-label="Leo Car início"><Brand /></a><nav className={menu ? 'open' : ''} aria-label="Navegação principal">{[['Serviços','servicos'],['A Leo Car','sobre'],['Nossa oficina','oficina'],['Contato','contato']].map(([name,id]) => <a key={id} href={`#${id}`} onClick={() => setMenu(false)}>{name}</a>)}</nav><a className="button header-cta" href="#agendamento">AGENDAR ATENDIMENTO <ArrowUpRight size={16} /></a><button className="menu-button" aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} onClick={() => setMenu(!menu)}>{menu ? <X /> : <Menu />}</button></header>
+    <header><a href="#inicio" aria-label="Leo Car início"><Brand /></a><nav className={menu ? 'open' : ''} aria-label="Navegação principal">{[['Serviços','servicos'],['A Leo Car','sobre'],['Nossa oficina','oficina'],['Contato','contato']].map(([name,id], index) => <a key={id} href={`#${id}`} className={activeSection===id?'nav-active':''} aria-current={activeSection===id?'location':undefined} onClick={() => {setMenu(false);setActiveSection(id);}}><span className="nav-number">0{index+1}</span><span className="nav-label">{name}</span><ArrowUpRight className="nav-arrow" size={13}/></a>)}</nav><a className="button header-cta" href="#agendamento">AGENDAR ATENDIMENTO <ArrowUpRight size={16} /></a><button className="menu-button" aria-label={menu ? 'Fechar menu' : 'Abrir menu'} aria-expanded={menu} onClick={() => setMenu(!menu)}>{menu ? <X /> : <Menu />}</button></header>
     <main id="conteudo">
       <section className="hero hero-premium" id="inicio"><div className="hero-image"><Image src={image('8078')} alt="Equipe Leo Car trabalhando em um veículo no elevador" fill priority sizes="(max-width:700px) 100vw, 65vw" quality={90}/></div><div className="hero-shade"/><div className="hero-stripes" aria-hidden="true"><span/><span/><span/></div><span className="hero-side-label" aria-hidden="true">PRECISÃO EM CADA DETALHE / LEO CAR</span><div className="container hero-content"><span className="hero-kicker"><span className="live-dot"/> SEU CENTRO AUTOMOTIVO EM AMÉRICO BRASILIENSE</span><h1>SEU CARRO.<br/><span className="hero-outline">NOSSO</span><br/><em>COMPROMISSO.</em></h1><div className="hero-description"><span className="hero-description-line"/><p>Da primeira avaliação ao próximo quilômetro.<br/>Tecnologia, cuidado e uma conversa de confiança.</p></div><div className="hero-action-row"><a className="button" href="#agendamento"><span>MEU CARRO MERECE ESSE CUIDADO<small>Converse com a equipe Leo Car</small></span><ArrowUpRight size={23}/></a><a className="hero-secondary" href="#oficina"><span><ArrowRight size={18}/></span>CONHEÇA A OFICINA</a></div><div className="hero-signature"><ShieldCheck size={18}/><span>CUIDADO DE VERDADE.<strong> DO DIAGNÓSTICO À ENTREGA.</strong></span></div></div><div className="hero-feature"><div className="hero-feature-photo"><Image src={image('8077')} alt="Equipamento de diagnóstico utilizado na Leo Car" fill sizes="100px"/></div><div><span className="eyebrow">TECNOLOGIA QUE CUIDA</span><strong>PRECISÃO COMEÇA<br/>NO DIAGNÓSTICO.</strong><button onClick={()=>choose('Diagnóstico eletrônico')}>CONHECER SERVIÇO <ArrowUpRight size={13}/></button></div><ScanLine size={25}/></div><div className="hero-bottom-rail container"><a href="#servicos" className="hero-scroll"><span><ChevronDown size={17}/></span>EXPLORE NOSSOS SERVIÇOS</a><span className="hero-photo-credit"><span className="live-dot"/> DENTRO DA NOSSA OFICINA. TODOS OS DIAS.</span><span className="hero-index">01 <i/> LEO CAR</span></div></section><div className="hero-service-rail"><div className="container">{[{icon:Wrench,name:'Mecânica geral',detail:'CUIDADO COM O CONJUNTO'},{icon:ScanLine,name:'Diagnóstico eletrônico',detail:'TECNOLOGIA APLICADA'},{icon:Settings2,name:'Câmbio automático',detail:'ATENÇÃO À TRANSMISSÃO'}].map(({icon:Icon,name,detail},i)=><button key={name} onClick={()=>choose(name)}><span className="rail-number">0{i+1}</span><Icon size={28} strokeWidth={1.3}/><span><small>{detail}</small><strong>{name}</strong></span><ArrowUpRight className="rail-arrow" size={20}/></button>)}</div></div>
       <section className="container services section" id="servicos"><div className="section-heading"><div><span className="eyebrow">O QUE A GENTE FAZ</span><h2>O CUIDADO QUE SEU CARRO PRECISA.</h2></div><a className="outline-button" href="#agendamento">ENCONTRE SEU SERVIÇO <ArrowRight size={16} /></a></div><div className="service-grid">{services.map(({name,photo,icon:Icon,description},i) => <article className="service-card" key={name}><div className="service-image"><Image src={image(photo)} alt={`Registro da Leo Car: ${name}`} fill sizes="(max-width:600px) 100vw, (max-width:900px) 50vw, 25vw" /><span className="card-number">0{i+1}</span></div><div className="service-body"><span className="service-icon"><Icon size={25} strokeWidth={1.6} /></span><h3>{name}</h3><p>{description}</p><button onClick={() => choose(name)}>SOLICITAR SERVIÇO <ArrowRight size={16} /></button></div></article>)}</div><div className="extra-services"><span>TAMBÉM CUIDAMOS DE</span>{['Freios','Suspensão','Alinhamento','Balanceamento'].map(s => <button key={s} onClick={() => choose(s)}>{s}<ArrowUpRight size={14} /></button>)}</div></section>
