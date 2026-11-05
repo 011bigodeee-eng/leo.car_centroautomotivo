@@ -23,3 +23,7 @@
 @media(min-width:1600px){.hero-premium{height:740px}.hero-premium h1{font-size:84px}.hero-premium .hero-content{padding-top:60px}.hero-premium .hero-image{left:48%}}
 @media(min-width:701px) and (max-width:1000px){.hero-premium h1{font-size:68px}.hero-premium .hero-image{left:42%}.hero-feature{width:275px}}
 @media(max-width:700px){.hero-premium{height:auto;min-height:920px}.hero-premium .hero-image{inset:180px 0 0;border-left:0}.hero-premium .hero-shade{background:linear-gradient(180deg,#0b0d0d 10%,#0b0d0de0 25%,#0b0d0d80 50%,#0b0d0d25 75%,#0b0d0d 100%),linear-gradient(90deg,#0b0d0d75,transparent)}.hero-premium .hero-content{padding-top:37px}.hero-premium h1{font-size:clamp(43px,11vw,70px);line-height:1.12;letter-spacing:-1px}.hero-kicker{letter-spacing:.6px}.hero-feature{left:6%;right:6%;bottom:91px;width:auto}.hero-stripes{height:45px;gap:6px}.hero-stripes>span{width:6px}}
+
+/* Abertura fluida para aproveitar a largura de telas grandes */
+.topbar,header{padding-inline:6%}.hero-premium .hero-content,.hero-premium .hero-bottom-rail,.hero-service-rail>.container{width:88%;max-width:none}.hero-feature{right:6%}.hero-stripes{right:6%}
+@media(min-width:1600px){.hero-premium .hero-image{left:43%}.hero-premium h1{font-size:clamp(84px,5.2vw,108px)}.hero-premium .hero-content{padding-top:52px}.hero-premium{height:780px}}
