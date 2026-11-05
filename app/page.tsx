@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { useWorkshopEffects } from './use-workshop-effects';
 import { ArrowRight, ArrowUpRight, Menu, X, Wrench, ScanLine, Droplets, Settings2, ShieldCheck, MessageCircle, MapPin, Check, ChevronDown, Plus, Minus, Navigation } from 'lucide-react';
 
 const image = (id: string) => `/images/IMG_${id}.JPG.jpeg`;
@@ -27,6 +28,7 @@ const faqs = [
 function Brand() { return <span className="brand"><strong>LEO<span>CAR</span><i>///</i></strong><small>CENTRO AUTOMOTIVO</small></span>; }
 
 export default function Home() {
+  useWorkshopEffects();
   const [menu, setMenu] = useState(false);
   const [activeSection, setActiveSection] = useState('');
   useEffect(() => {
